@@ -1,0 +1,93 @@
+{
+  "url": "https://example.com",
+  "scores": {
+    "overall": 96.0,
+    "technical": 100.0,
+    "onpage": 87.0,
+    "performance": 100.0,
+    "content": 95.0,
+    "mobile": 100.0,
+    "issues_by_severity": {
+      "critical": 0,
+      "high": 0,
+      "medium": 2,
+      "low": 4,
+      "info": 0
+    }
+  },
+  "issues": [
+    {
+      "code": "title_too_short",
+      "severity": "low",
+      "category": "onpage",
+      "url": "https://example.com",
+      "message": "Title too short (14 chars; recommended 50-60)",
+      "impact": "Short titles miss ranking and CTR opportunities.",
+      "recommendation": "Expand to 50-60 chars, naturally including the primary keyword and a value prop.",
+      "example": null,
+      "details": {}
+    },
+    {
+      "code": "missing_meta_description",
+      "severity": "medium",
+      "category": "onpage",
+      "url": "https://example.com",
+      "message": "Page has no meta description",
+      "impact": "No meta description = lower CTR and Google writing its own snippet.",
+      "recommendation": "Add a unique 140-160 char description with primary keyword and a call to action.",
+      "example": "<meta name=\"description\" content=\"...\">",
+      "details": {}
+    },
+    {
+      "code": "thin_content",
+      "severity": "medium",
+      "category": "content",
+      "url": "https://example.com",
+      "message": "Thin content (21 words; recommended ≥300)",
+      "impact": "Pages under ~300 words rarely rank for competitive queries.",
+      "recommendation": "Expand with examples, FAQs, or supporting depth — or noindex if the page isn't meant to rank.",
+      "example": null,
+      "details": {}
+    },
+    {
+      "code": "missing_schema",
+      "severity": "low",
+      "category": "schema",
+      "url": "https://example.com",
+      "message": "Page has no JSON-LD structured data",
+      "impact": "Without structured data, rich results (FAQs, breadcrumbs, ratings) aren't eligible.",
+      "recommendation": "Add JSON-LD markup appropriate to the page type (Article, Product, FAQPage, etc.).",
+      "example": "<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"Article\",...}</script>",
+      "details": {}
+    },
+    {
+      "code": "missing_og",
+      "severity": "low",
+      "category": "social",
+      "url": "https://example.com",
+      "message": "Missing Open Graph tags: og:title, og:description, og:image, og:url",
+      "impact": "Missing OG tags cause ugly social shares with no image or summary.",
+      "recommendation": "Add og:title, og:description, og:image, og:url to every public page.",
+      "example": "<meta property=\"og:title\" content=\"...\">",
+      "details": {
+        "missing": [
+          "og:title",
+          "og:description",
+          "og:image",
+          "og:url"
+        ]
+      }
+    },
+    {
+      "code": "missing_twitter_card",
+      "severity": "low",
+      "category": "social",
+      "url": "https://example.com",
+      "message": "No Twitter Card metadata",
+      "impact": "Twitter falls back to a plain link without a card.",
+      "recommendation": "Add twitter:card='summary_large_image' plus title/description/image.",
+      "example": "<meta name=\"twitter:card\" content=\"summary_large_image\">",
+      "details": {}
+    }
+  ]
+}

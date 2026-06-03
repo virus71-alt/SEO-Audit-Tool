@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SEO Audit Report — {{ audit.url }}</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --text: #f1f5f9; --muted: #94a3b8;
+    --accent: #38bdf8; --good: #4ade80; --warn: #facc15; --bad: #f87171; --crit: #ef4444;
+    --border: #334155;
+  }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f8fafc;--panel:#ffffff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+         background:var(--bg); color:var(--text); }
+  .wrap { max-width:1100px; margin: 0 auto; padding: 32px 24px; }
+  h1 { font-size: 28px; margin: 0 0 4px; }
+  h2 { font-size: 20px; margin: 32px 0 12px; }
+  .muted { color: var(--muted); }
+  .scores { display:grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 20px; }
+  .score-card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; }
+  .score-card .v { font-size:28px; font-weight:700; }
+  .score-card .l { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  .badge { display:inline-block; padding:2px 8px; border-radius:6px; font-size:11px; font-weight:600; text-transform:uppercase; }
+  .badge.critical { background:var(--crit); color:#fff; }
+  .badge.high { background:var(--bad); color:#fff; }
+  .badge.medium { background:var(--warn); color:#000; }
+  .badge.low { background:#3b82f6; color:#fff; }
+  .badge.info { background:#64748b; color:#fff; }
+  table { width:100%; border-collapse:collapse; margin-top:8px; background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  th, td { text-align:left; padding:10px 12px; font-size:14px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { background:rgba(56,189,248,0.08); font-weight:600; }
+  tr:last-child td { border-bottom:none; }
+  .url { font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size:12px; word-break:break-all; }
+  .rec { background:rgba(74,222,128,0.05); padding:8px 10px; border-radius:8px; font-size:13px; }
+  code { font-family: ui-monospace, Menlo, monospace; font-size:12px; background:rgba(255,255,255,0.04); padding:2px 6px; border-radius:4px; }
+  .summary-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .panel { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px; }
+  .pill { display:inline-flex; align-items:center; gap:6px; background:var(--panel); border:1px solid var(--border);
+          padding:6px 10px; border-radius:999px; font-size:12px; margin-right:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>SEO Audit Report</h1>
+  <div class="muted url">{{ audit.url }}</div>
+  <div class="muted" style="margin-top:6px;">
+    Audit #{{ audit.id }} · started {{ audit.started_at }} ·
+    {{ audit.pages_crawled }} pages crawled · status: <strong>{{ audit.status }}</strong>
+  </div>
+
+  <div class="scores">
+    <div class="score-card"><div class="v">{{ "%.0f"|format(audit.overall_score or 0) }}</div><div class="l">Overall</div></div>
+    <div class="score-card"><div class="v">{{ "%.0f"|format(audit.technical_score or 0) }}</div><div class="l">Technical</div></div>
+    <div class="score-card"><div class="v">{{ "%.0f"|format(audit.onpage_score or 0) }}</div><div class="l">On-Page</div></div>
+    <div class="score-card"><div class="v">{{ "%.0f"|format(audit.performance_score or 0) }}</div><div class="l">Performance</div></div>
+    <div class="score-card"><div class="v">{{ "%.0f"|format(audit.content_score or 0) }}</div><div class="l">Content</div></div>
+    <div class="score-card"><div class="v">{{ "%.0f"|format(audit.mobile_score or 0) }}</div><div class="l">Mobile</div></div>
+  </div>
+
+  <h2>Executive summary</h2>
+  <div class="summary-grid">
+    <div class="panel">
+      <strong>Issues by severity</strong>
+      <div style="margin-top:8px;">
+        {% for sev, count in severity_counts.items() %}
+          <span class="pill"><span class="badge {{ sev }}">{{ sev }}</span> {{ count }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="panel">
+      <strong>Coverage</strong>
+      <div style="margin-top:8px;" class="muted">
+        Pages crawled: {{ audit.pages_crawled }}<br>
+        Sitemap URLs discovered: {{ (audit.summary or {}).get('sitemap_urls', 0) }}<br>
+        robots.txt loaded: {{ (audit.summary or {}).get('robots_loaded', false) }}
+      </div>
+    </div>
+  </div>
+
+  <h2>Top recommendations</h2>
+  <table>
+    <thead><tr><th>Severity</th><th>Issue</th><th>Recommendation</th></tr></thead>
+    <tbody>
+    {% for issue in top_issues %}
+      <tr>
+        <td><span class="badge {{ issue.severity }}">{{ issue.severity }}</span></td>
+        <td>
+          <strong>{{ issue.message }}</strong>
+          {% if issue.url %}<br><span class="url muted">{{ issue.url }}</span>{% endif %}
+          {% if issue.impact %}<div class="muted" style="margin-top:4px;">{{ issue.impact }}</div>{% endif %}
+        </td>
+        <td>
+          <div class="rec">{{ issue.recommendation or '—' }}</div>
+          {% if issue.example %}<code>{{ issue.example }}</code>{% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>All issues ({{ issues|length }})</h2>
+  <table>
+    <thead><tr><th>Severity</th><th>Code</th><th>Category</th><th>Message</th><th>URL</th></tr></thead>
+    <tbody>
+    {% for issue in issues %}
+      <tr>
+        <td><span class="badge {{ issue.severity }}">{{ issue.severity }}</span></td>
+        <td><code>{{ issue.code }}</code></td>
+        <td>{{ issue.category }}</td>
+        <td>{{ issue.message }}</td>
+        <td class="url">{{ issue.url or '—' }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="muted" style="margin-top:32px; text-align:center; font-size:12px;">
+    Generated by SEO Audit Tool v0.1.0
+  </div>
+</div>
+</body>
+</html>
