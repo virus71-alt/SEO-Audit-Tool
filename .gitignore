@@ -1,19 +1,56 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
 *.egg-info/
+*.egg
 .venv/
 venv/
+
+# Environment — NEVER commit real credentials
 .env
 .env.local
+.env.production
+.env.staging
+
+# Test / coverage artefacts
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 .coverage
 htmlcov/
+
+# Audit result files generated at runtime — may contain private site data
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!tsconfig.*.json
+
+# Temp server files created during local testing
+.server_pid.txt
+.server_out.txt
+.server_err.txt
+
+# Claude Code session config (contains local machine paths)
+.claude/
+
+# Frontend
 node_modules/
 dist/
 build/
+
+# IDEs
 .idea/
 .vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
 *.log
+
+# Docker volumes / secrets
+docker-secrets/
