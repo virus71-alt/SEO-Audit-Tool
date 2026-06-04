@@ -1,0 +1,19 @@
+127.0.0.1 - - [03/Jun/2026 21:52:05] "GET /robots.txt HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:07] "GET /sitemap.xml HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] code 404, message File not found
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /sitemap_index.xml HTTP/1.1" 404 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /notes.html HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /vocabulary.html HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /charts.html HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /resources.html HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /contact.html HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /tools.html HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /listening.html HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /notes.html?level=n5 HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /notes.html?level=n4 HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /notes.html?level=irodori-s HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:08] "GET /privacy.html HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:09] "GET /terms.html HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jun/2026 21:52:09] "GET /about.html HTTP/1.1" 200 -
