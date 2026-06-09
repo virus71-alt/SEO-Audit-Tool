@@ -79,27 +79,33 @@ async def _run(url: str, max_pages: int, performance: bool, json_out: Path | Non
         sev_table.add_row(sev, str(count))
     console.print(sev_table)
 
-    if json_out:
-        json_out.write_text(
-            encoding="utf-8",
-            data=json.dumps(
-                {
-                    "url": url,
-                    "scores": score.__dict__,
-                    "issues": [
-                        {
-                            "code": i.code, "severity": i.severity.value, "category": i.category,
-                            "url": i.url, "message": i.message, "impact": i.impact,
-                            "recommendation": i.recommendation, "example": i.example,
-                            "details": i.details,
-                        }
-                        for i in issues
-                    ],
-                },
-                indent=2, ensure_ascii=False,
-            )
+    if json_out is None:
+        from datetime import datetime
+        result_dir = Path("Result")
+        result_dir.mkdir(parents=True, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        json_out = result_dir / f"{timestamp}.json"
+
+    json_out.write_text(
+        encoding="utf-8",
+        data=json.dumps(
+            {
+                "url": url,
+                "scores": score.__dict__,
+                "issues": [
+                    {
+                        "code": i.code, "severity": i.severity.value, "category": i.category,
+                        "url": i.url, "message": i.message, "impact": i.impact,
+                        "recommendation": i.recommendation, "example": i.example,
+                        "details": i.details,
+                    }
+                    for i in issues
+                ],
+            },
+            indent=2, ensure_ascii=False,
         )
-        console.print(f"\n[green]OK[/green] wrote {json_out}")
+    )
+    console.print(f"\n[green]OK[/green] wrote {json_out}")
 
 
 if __name__ == "__main__":

@@ -1,39 +1,39 @@
-# SEO Audit Tool
+# 🚀 SEO Audit Tool
 
 A production-quality, modular SEO audit platform written in **Python 3.11+** with a **React** frontend.
 Performs comprehensive technical, on-page, content, performance, mobile, structured-data, link, and keyword analysis — comparable in scope to Ahrefs Site Audit, SEMrush, Screaming Frog, and Google Search Console.
 
-> **Windows users:** All commands below use **PowerShell**. Python 3.11 is all you need for the CLI — no Docker required.
+> **💡 Windows users:** All commands below use **PowerShell**. Python 3.11 is all you need for the CLI — no Docker required.
 
 ---
 
-## Features at a glance
+## ✨ Features at a glance
 
 | Category | What it checks |
 |---|---|
-| **Technical SEO** | 404/5xx pages, redirect chains & loops, soft 404s, noindex tags, canonical mismatches, HTTPS, mixed content, crawl depth, orphan pages, broken internal links |
-| **On-Page SEO** | Title length & duplicates, meta description length & duplicates, missing/multiple H1s, heading hierarchy skips |
-| **Content** | Thin content (<300 words), duplicate body fingerprints, keyword stuffing, primary keyword missing from title/H1 |
-| **Images** | Missing alt text, empty alt, missing width/height (causes CLS) |
-| **Links** | Broken internal links, redirecting links, nofollow abuse, pages with no inbound links |
-| **Structured Data** | JSON-LD presence, @type validation, required field checks (FAQPage, Article, Product, BreadcrumbList…) |
-| **Social** | Open Graph og:title/description/image/url, Twitter Cards |
-| **Mobile** | Missing or malformed viewport meta tag |
-| **Performance** | Slow TTFB, LCP > 2.5s, CLS > 0.1, FCP > 1.8s via Google PageSpeed Insights API |
+| **🛠️ Technical SEO** | 404/5xx pages, redirect chains & loops, soft 404s, noindex tags, canonical mismatches, HTTPS, mixed content, crawl depth, orphan pages, broken internal links |
+| **📝 On-Page SEO** | Title length & duplicates, meta description length & duplicates, missing/multiple H1s, heading hierarchy skips |
+| **✍️ Content** | Thin content (<300 words), duplicate body fingerprints, keyword stuffing, primary keyword missing from title/H1 |
+| **🖼️ Images** | Missing alt text, empty alt, missing width/height (causes CLS) |
+| **🔗 Links** | Broken internal links, redirecting links, nofollow abuse, pages with no inbound links |
+| **🏷️ Structured Data** | JSON-LD presence, @type validation, required field checks (FAQPage, Article, Product, BreadcrumbList…) |
+| **📱 Social** | Open Graph og:title/description/image/url, Twitter Cards |
+| **📲 Mobile** | Missing or malformed viewport meta tag |
+| **⚡ Performance** | Slow TTFB, LCP > 2.5s, CLS > 0.1, FCP > 1.8s via Google PageSpeed Insights API |
 
-**Scoring** — weighted overall score out of 100:
+**🔢 Scoring** — weighted overall score out of 100:
 
 ```
 Overall = Technical×30% + On-Page×25% + Performance×20% + Content×15% + Mobile×10%
 ```
 
-**AI recommendations** — every issue ships with severity, SEO impact explanation, fix recommendation, and a code snippet.
+**🤖 AI recommendations** — every issue ships with severity, SEO impact explanation, fix recommendation, and a code snippet.
 
-**Reports** — HTML dashboard · PDF export · CSV · JSON (CLI).
+**📊 Reports** — HTML dashboard · PDF export · CSV · JSON (CLI).
 
 ---
 
-## Project structure
+## 📁 Project structure
 
 ```
 SEO/
@@ -62,62 +62,62 @@ SEO/
 
 ---
 
-## Option A — CLI only (Windows, no Docker needed)
+## 💻 Option A — CLI only (Windows, no Docker needed)
 
 Fastest way to run an audit. Only Python is required.
 
-### 1. Open PowerShell and go to the project folder
+### 1. 📂 Open PowerShell and go to the project folder
 
 ```powershell
 cd "C:\Users\YourName\Downloads\SEO"
 ```
 
-### 2. Create a virtual environment
+### 2. 🐍 Create a virtual environment
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-> **"running scripts is disabled" error?** Run this once (no admin needed):
+> **⚠️ "running scripts is disabled" error?** Run this once (no admin needed):
 > ```powershell
 > Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 > ```
 > Then activate again.
 
-### 3. Install the CLI dependencies
+### 3. 📦 Install the CLI dependencies
 
 ```powershell
 pip install httpx beautifulsoup4 lxml protego tldextract typer rich "pydantic>=2.7" "pydantic-settings>=2.3" jinja2 tenacity
 ```
 
-### 4. Run an audit
+### 4. ⚡ Run an audit
 
 ```powershell
 $env:PYTHONPATH = "$pwd\backend"
 $env:PYTHONIOENCODING = "utf-8"
-.\.venv\Scripts\python.exe -m seo_audit.cli https://your-website.com --max-pages 50 --json results.json
+.\.venv\Scripts\python.exe -m seo_audit.cli https://your-website.com --max-pages 50
 ```
 
-You will see a live score table in the terminal and a `results.json` file in the folder.
+You will see a live score table in the terminal and a timestamped report inside the `Result` folder (e.g. `Result/2026-06-09_19-17-50.json`).
 
-### CLI options
+### ⚙️ CLI options
 
 | Flag | Default | What it does |
 |---|---|---|
 | `--max-pages N` | 100 | How many pages to crawl — increase for bigger sites |
 | `--performance` | off | Call Google PageSpeed Insights (needs `PSI_API_KEY` in `.env`) |
-| `--json PATH` | — | Write full result (scores + every issue) to a JSON file |
+| `--json PATH` | *(auto)* | Custom path to save the JSON file (defaults to `Result/` with current timestamp) |
 
-### Example — view your results
+### 🔍 Example — view your results
 
 ```powershell
-$j = Get-Content results.json | ConvertFrom-Json
+$j = Get-Content Result\2026-06-09_19-17-50.json | ConvertFrom-Json
 "Overall score: $($j.scores.overall)/100"
 $j.issues | Format-Table severity, code, message -AutoSize
 ```
 
-### Example — CI score gate (fail build if score < 80)
+### 🚨 Example — CI score gate (fail build if score < 80)
 
 ```powershell
 $env:PYTHONPATH = "$pwd\backend"
@@ -129,13 +129,13 @@ if ($score -lt 80) { Write-Error "SEO score $score is below threshold 80"; exit 
 
 ---
 
-## Option B — Full stack (Web dashboard + PostgreSQL + Celery)
+## 🐳 Option B — Full stack (Web dashboard + PostgreSQL + Celery)
 
 Use this when you want the web UI, user accounts, scheduled audits, email alerts, and downloadable PDF/HTML reports.
 
 **Requires:** [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/) with the WSL 2 backend enabled (reboot after install).
 
-### 1. Copy the env file and set a secret key
+### 1. 📄 Copy the env file and set a secret key
 
 ```powershell
 Copy-Item .env.example .env
@@ -150,7 +150,7 @@ Generate one in PowerShell:
 
 Paste the output as the `JWT_SECRET` value.
 
-### 2. Start all services
+### 2. 🚀 Start all services
 
 ```powershell
 docker compose up --build
@@ -160,11 +160,11 @@ First build takes 3–5 minutes. After that:
 
 | Service | URL |
 |---|---|
-| **API + Swagger docs** | http://localhost:8000/docs |
-| **React dashboard** | http://localhost:3000 |
-| **Health check** | http://localhost:8000/health |
+| **🔌 API + Swagger docs** | http://localhost:8000/docs |
+| **🖥️ React dashboard** | http://localhost:3000 |
+| **🩺 Health check** | http://localhost:8000/health |
 
-### 3. Register and run your first audit
+### 3. 🔐 Register and run your first audit
 
 **Via the dashboard:**
 1. Open http://localhost:3000
@@ -206,7 +206,7 @@ Invoke-WebRequest "http://localhost:8000/api/reports/$id/csv"  -Headers $headers
 Start-Process "report.html"   # opens in your default browser
 ```
 
-### Useful Docker commands
+### 🐳 Useful Docker commands
 
 ```powershell
 docker compose up -d --build              # start everything in the background
@@ -222,7 +222,7 @@ docker compose exec api alembic upgrade head   # apply DB migrations
 
 ---
 
-## Configuration reference (`.env`)
+## ⚙️ Configuration reference (`.env`)
 
 | Variable | Default | Description |
 |---|---|---|
@@ -242,7 +242,7 @@ docker compose exec api alembic upgrade head   # apply DB migrations
 
 ---
 
-## Scheduled audits
+## ⏰ Scheduled audits
 
 The Celery beat service runs automatically in Docker:
 
@@ -263,7 +263,7 @@ celery_app.conf.beat_schedule["nightly"] = {
 
 ---
 
-## Running the tests
+## 🧪 Running the tests
 
 ```powershell
 # With the venv active (Option A)
@@ -278,7 +278,7 @@ Tests use in-memory SQLite — no external services required. Covers the HTML pa
 
 ---
 
-## Adding a new audit module
+## ➕ Adding a new audit module
 
 **1.** Create `backend\seo_audit\audits\my_check.py`:
 
@@ -325,7 +325,7 @@ That's it — the new check runs on every future audit automatically and its fin
 
 ---
 
-## Tech stack
+## 🛠️ Tech stack
 
 | Layer | Technology |
 |---|---|
@@ -341,7 +341,7 @@ That's it — the new check runs on every future audit automatically and its fin
 
 ---
 
-## Troubleshooting (Windows)
+## 🔍 Troubleshooting (Windows)
 
 | Problem | Fix |
 |---|---|
@@ -356,6 +356,6 @@ That's it — the new check runs on every future audit automatically and its fin
 
 ---
 
-## License
+## 📄 License
 
 MIT — free to use, modify, and distribute.
