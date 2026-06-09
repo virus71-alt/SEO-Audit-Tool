@@ -54,3 +54,6 @@ Thumbs.db
 
 # Docker volumes / secrets
 docker-secrets/
+
+
+.env.example
